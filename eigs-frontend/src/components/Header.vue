@@ -26,7 +26,9 @@
           <router-link to="/products" class="nav-link">Product</router-link>
           <a href="https://contoh-wiki.com" target="_blank" class="nav-link">Wiki</a>
           <router-link to="/about" class="nav-link">About Us</router-link>
-          <button @click="toggleSidebar" class="sidebar-btn">☰</button>
+
+          <!-- Tambahkan komponen ProfileDropdown -->
+          <AuthDropdown />
         </div>
       </nav>
     </div>
@@ -34,21 +36,29 @@
 </template>
 
 <script>
+import AuthDropdown from "@/components/AuthDropdown.vue";
+
 export default {
-  methods: {
-    toggleSidebar() {
-      alert("Sidebar dibuka! (Fitur ini akan dikembangkan)");
-    }
+  components: {
+    AuthDropdown
   }
 };
 </script>
 
 <style scoped>
+/* Import Font Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Mengatur font Montserrat sebagai default */
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 /* Membatasi Lebar Maksimal untuk 1080p */
 .container {
-  max-width: 1080px; /* Menyesuaikan dengan layar 1080p */
-  width: 95vw; /* Agar tetap fleksibel */
-  min-width: 320px; /* Agar tidak berantakan di layar kecil */
+  max-width: 1080px;
+  width: 95vw;
+  min-width: 320px;
   margin: auto;
   display: flex;
   align-items: center;
@@ -64,9 +74,10 @@ header {
 
 /* Logo */
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   flex-shrink: 0;
 }
 
@@ -78,7 +89,7 @@ header {
   flex-grow: 1;
 }
 
-/* Search Box - Dipusatkan */
+/* Search Box */
 .search-container {
   flex-grow: 1;
   display: flex;
@@ -89,19 +100,18 @@ header {
   display: flex;
   align-items: center;
   background-color: #333;
-  border-radius: 4px;
-  padding: 5px 10px;
+  border-radius: 6px;
+  padding: 6px 12px;
   width: 100%;
   max-width: 350px;
 }
 
 .search__input {
-  font-family: inherit;
   font-size: 14px;
   border: none;
   background-color: transparent;
   color: white;
-  padding: 5px;
+  padding: 6px;
   width: 100%;
 }
 
@@ -116,7 +126,7 @@ header {
   color: white;
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 6px;
 }
 
 .search__button svg {
@@ -139,21 +149,32 @@ header {
 .nav-link {
   text-decoration: none;
   color: white;
-  font-weight: bold;
-  transition: color 0.3s;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s, transform 0.2s;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #f39c12;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
 }
 
 .nav-link:hover {
   color: #f39c12;
+  transform: scale(1.05);
 }
 
-/* Button Sidebar */
-.sidebar-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 5px;
+.nav-link:hover::after {
+  transform: scaleX(1);
 }
 </style>
