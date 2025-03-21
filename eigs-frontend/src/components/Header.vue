@@ -46,14 +46,6 @@ export default {
 </script>
 
 <style scoped>
-/* Import Font Montserrat */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
-/* Mengatur font Montserrat sebagai default */
-* {
-  font-family: 'Montserrat', sans-serif;
-}
-
 /* Membatasi Lebar Maksimal untuk 1080p */
 .container {
   max-width: 1080px;

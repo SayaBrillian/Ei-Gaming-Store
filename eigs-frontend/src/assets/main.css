@@ -1,4 +1,11 @@
 @import './base.css';
+/* Import Font Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Mengatur font Montserrat sebagai default */
+* {
+  font-family: 'Montserrat', sans-serif;
+}
 
 /* Reset tampilan default */
 * {
