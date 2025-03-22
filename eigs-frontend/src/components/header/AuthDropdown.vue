@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       isDropdownVisible: false,
-      isLoggedIn: false, 
+      isLoggedIn: true, 
       showUserModal: false,
       showAdminModal: false,
       userProfile: {

@@ -11,17 +11,12 @@ import About from '../views/About.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', component: Home }, // Rute Home
-    { 
-      path: '/products', 
-      component: Products, 
-      children: [
-        { path: ':id', component: ProductDetail } // Detail produk (rute dinamis)
-      ]
-    },
-    { path: '/help', component: Help }, // Rute Help
-    { path: '/terms-of-service', component: TermsOfService }, // Rute ToS
-    { path: '/about', component: About }, // Rute About Us
+    { path: '/', name: 'Home', component: Home }, // Rute Home
+    { path: '/products', name: 'Products', component: Products }, // Rute daftar produk
+    { path: '/products/:id', name: 'ProductDetail', component: ProductDetail }, // Rute detail produk dinamis
+    { path: '/help', name: 'Help', component: Help }, // Rute Help
+    { path: '/terms-of-service', name: 'TermsOfService', component: TermsOfService }, // Rute ToS
+    { path: '/about', name: 'About', component: About }, // Rute About Us
   ],
 });
 
