@@ -1,7 +1,7 @@
 <template>
   <div class="auth-container" @click="toggleDropdown">
     <div class="avatar">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="white">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="rgba(167, 139, 250, 1)">
         <circle cx="12" cy="8" r="4" />
         <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
       </svg>
@@ -45,14 +45,14 @@ export default {
   data() {
     return {
       isDropdownVisible: false,
-      isLoggedIn: false, // Simpan status login user
+      isLoggedIn: false, 
       showUserModal: false,
       showAdminModal: false,
       userProfile: {
         name: "John Doe",
         email: "johndoe@example.com",
-        picture: "https://via.placeholder.com/40", // Ganti dengan gambar profil asli jika ada
-        isAdmin: false, // Status user (false = User, true = Admin)
+        picture: "https://via.placeholder.com/40",
+        isAdmin: false,
       },
     };
   },
@@ -61,7 +61,7 @@ export default {
       this.isDropdownVisible = !this.isDropdownVisible;
     },
     logout() {
-      this.isLoggedIn = false; // Simulasikan logout
+      this.isLoggedIn = false;
       alert("Anda telah logout");
     },
     openUserModal() {
@@ -84,16 +84,18 @@ export default {
 .avatar svg {
   display: block;
   border-radius: 50%;
-  background-color: #444;
+  background-color: white;
   padding: 5px;
+  border: 2px solid rgba(167, 139, 250, 1); /* Border ungu */
 }
 
+/* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
   top: 50px;
   right: 0;
-  background: #222;
-  color: white;
+  background: white;
+  color: rgba(85, 85, 85, 1);
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -106,7 +108,7 @@ export default {
 .dropdown-item {
   background: none;
   border: none;
-  color: white;
+  color: rgba(85, 85, 85, 1);
   padding: 10px;
   text-align: left;
   cursor: pointer;
@@ -117,13 +119,16 @@ export default {
 }
 
 .dropdown-item:hover {
-  background: #444;
+  background: rgba(167, 139, 250, 0.1);
+  color: rgba(167, 139, 250, 1);
   transform: scale(1.05);
 }
 
+/* Dashboard Link */
 .dashboard-link {
   font-weight: bold;
-  color: white;
+  color: rgba(167, 139, 250, 1);
+  border: 1px solid rgba(167, 139, 250, 1);
   border-radius: 6px;
   padding: 12px;
   text-align: center;
@@ -132,10 +137,11 @@ export default {
 }
 
 .dashboard-link:hover {
-  background: #444;
+  background: rgba(167, 139, 250, 0.1);
   transform: scale(1.05);
 }
 
+/* Profil Card */
 .profile-card {
   display: flex;
   flex-direction: column;
@@ -153,7 +159,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid rgba(167, 139, 250, 1);
 }
 
 .profile-name {
@@ -163,21 +169,21 @@ export default {
 
 .profile-email {
   font-size: 13px;
-  color: #bbb;
+  color: rgba(100, 100, 100, 1);
 }
 
 .profile-status {
   font-size: 12px;
   font-weight: bold;
-  color: #00ff00;
+  color: rgba(100, 100, 100, 1);
 }
 
 .profile-status.admin {
-  color: #ffcc00;
+  color: rgba(167, 139, 250, 1);
 }
 
 .logout {
-  background: red;
+  background: rgba(250, 100, 100, 1);
   color: white;
   border-radius: 6px;
   padding: 12px;
@@ -187,17 +193,7 @@ export default {
 }
 
 .logout:hover {
-  background: darkred;
+  background: rgba(200, 60, 60, 1);
   transform: scale(1.05);
-}
-.modals-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
 }
 </style>
