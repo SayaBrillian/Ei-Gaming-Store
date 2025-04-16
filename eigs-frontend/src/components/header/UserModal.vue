@@ -5,7 +5,7 @@
         <div class="modal-box login-box">
           <h2 class="centered-title">Login</h2>
           <form @submit.prevent="handleLogin">
-            <input type="text" v-model="loginData.username" placeholder="Username or Email" required />
+            <input type="text" v-model="loginData.username" placeholder="Username/Email/UID" required />
             <input type="password" v-model="loginData.password" placeholder="Password" required />
             <button type="submit">Login</button>
           </form>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import usersData from '@/assets/tempodb/users.json';
+
 export default {
   data() {
     return {
@@ -41,15 +43,85 @@ export default {
         email: "",
         password: "",
         confirmPassword: ""
-      }
+      },
+      users: [] // dari JSON
     };
+  },
+  mounted() {
+    // Ambil data users dari import
+    this.users = usersData;
+
+    // Cek apakah ada data tambahan dari localStorage (simulasi register yang tersimpan)
+    const storedUsers = JSON.parse(localStorage.getItem('temp_users'));
+    if (storedUsers && Array.isArray(storedUsers)) {
+      this.users = [...this.users, ...storedUsers];
+    }
   },
   methods: {
     handleLogin() {
-      console.log("Logging in:", this.loginData);
+      const input = this.loginData;
+
+      const user = this.users.find(u =>
+        (u.username === input.username ||
+          u.email === input.username ||
+          u.uid === input.username) &&
+        u.password === input.password
+      );
+
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        alert(`Login berhasil! Selamat datang, ${user.name}`);
+
+        // Reload halaman setelah login berhasil
+        location.reload();  // Ini akan memuat ulang halaman
+
+        this.$emit('close');
+      } else {
+        alert("Username/email/UID atau password salah.");
+      }
     },
+
     handleRegister() {
-      console.log("Registering:", this.registerData);
+      const input = this.registerData;
+
+      // Validasi password
+      if (input.password !== input.confirmPassword) {
+        alert("Password tidak cocok!");
+        return;
+      }
+
+      // Cek duplicate username/email
+      const isDuplicate = this.users.some(u =>
+        u.username === input.username || u.email === input.email
+      );
+
+      if (isDuplicate) {
+        alert("Username atau email sudah digunakan.");
+        return;
+      }
+
+      // Generate UID 8 digit
+      const nextId = this.users.length + 1;
+      const uid = String(nextId).padStart(8, '0');
+
+      const newUser = {
+        id: nextId,
+        uid: uid,
+        name: input.name,
+        username: input.username,
+        email: input.email,
+        password: input.password
+      };
+
+      // Simpan user baru ke localStorage sementara (karena tidak bisa ubah file asli)
+      let newUsers = JSON.parse(localStorage.getItem('temp_users')) || [];
+      newUsers.push(newUser);
+      localStorage.setItem('temp_users', JSON.stringify(newUsers));
+      localStorage.setItem('user', JSON.stringify(newUser));
+
+      alert(`Register berhasil! UID kamu: ${uid}`);
+      this.users.push(newUser); // untuk session saat ini
+      this.$emit('close');
     }
   }
 };
@@ -151,8 +223,8 @@ button:hover {
 
 /* Style baru: Buat tulisan Login dan Register di tengah dan tebal */
 .centered-title {
-  text-align: center; 
+  text-align: center;
   font-weight: bold;
-  font-size: 24px; 
+  font-size: 24px;
 }
 </style>

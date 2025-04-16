@@ -6,11 +6,13 @@
         <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
       </svg>
     </div>
+
     <div v-if="isDropdownVisible" class="dropdown-menu">
       <template v-if="!isLoggedIn">
         <button @click="openUserModal" class="dropdown-item">Login as User</button>
         <button @click="openAdminModal" class="dropdown-item">Login as Admin</button>
       </template>
+
       <template v-else>
         <div class="profile-card">
           <div class="profile-info">
@@ -28,8 +30,10 @@
         </div>
       </template>
     </div>
-    <UserModal v-if="showUserModal" @close="showUserModal = false" />
-    <AdminModal v-if="showAdminModal" @close="showAdminModal = false" />
+
+    <!-- Modals -->
+    <UserModal v-if="showUserModal" @close="handleUserModalClose" />
+    <AdminModal v-if="showAdminModal" @close="handleAdminModalClose" />
   </div>
 </template>
 
@@ -45,30 +49,68 @@ export default {
   data() {
     return {
       isDropdownVisible: false,
-      isLoggedIn: true, 
+      isLoggedIn: false,
       showUserModal: false,
       showAdminModal: false,
       userProfile: {
-        name: "John Doe",
-        email: "johndoe@example.com",
+        name: "",
+        email: "",
         picture: "https://via.placeholder.com/40",
         isAdmin: false,
       },
     };
   },
+  mounted() {
+    this.loadUserData();
+  },
   methods: {
     toggleDropdown() {
       this.isDropdownVisible = !this.isDropdownVisible;
-    },
-    logout() {
-      this.isLoggedIn = false;
-      alert("Anda telah logout");
     },
     openUserModal() {
       this.showUserModal = true;
     },
     openAdminModal() {
       this.showAdminModal = true;
+    },
+    handleUserModalClose() {
+      this.showUserModal = false;
+      this.loadUserData();
+    },
+    handleAdminModalClose() {
+      this.showAdminModal = false;
+      this.loadUserData();
+    },
+    loadUserData() {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (userData) {
+        this.isLoggedIn = true;
+        this.userProfile = {
+          name: userData.name,
+          email: userData.email,
+          picture: userData.picture || "https://via.placeholder.com/40",
+          isAdmin: userData.isAdmin || false,
+        };
+      } else {
+        this.isLoggedIn = false;
+        this.userProfile = {
+          name: "",
+          email: "",
+          picture: "https://via.placeholder.com/40",
+          isAdmin: false,
+        };
+      }
+    },
+    logout() {
+      this.isLoggedIn = false;
+      this.userProfile = {
+        name: "",
+        email: "",
+        picture: "https://via.placeholder.com/40",
+        isAdmin: false,
+      };
+      localStorage.removeItem("user");
+      alert("Anda telah logout");
     },
   },
 };

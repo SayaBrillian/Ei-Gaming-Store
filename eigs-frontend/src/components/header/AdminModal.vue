@@ -2,17 +2,11 @@
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <form @submit.prevent="login">
-        <label for="role">Login As</label>
-        <select v-model="form.role" id="role">
-          <option value="admin">Admin</option>
-          <option value="superadmin">Superadmin</option>
-        </select>
-
-        <label for="username">ID / Username</label>
-        <input type="text" v-model="form.username" id="username" placeholder="Enter your username" required />
+        <label for="username">Username / ID</label>
+        <input type="text" v-model="form.username" id="username" placeholder="Masukkan username / ID" required />
 
         <label for="password">Password</label>
-        <input type="password" v-model="form.password" id="password" placeholder="Enter your password" required />
+        <input type="password" v-model="form.password" id="password" placeholder="Masukkan password" required />
 
         <button type="submit" class="login-btn">Login</button>
       </form>
@@ -23,22 +17,47 @@
 </template>
 
 <script>
+import adminsData from '@/assets/tempodb/admins.json';
+
 export default {
   data() {
     return {
       form: {
-        role: "admin",
-        username: "",
-        password: "",
+        username: '',
+        password: ''
       },
+      admins: []
     };
+  },
+  mounted() {
+    this.admins = adminsData;
+
+    // Cek juga localStorage (kalau kamu ingin mendukung simpanan lokal baru)
+    const stored = JSON.parse(localStorage.getItem('temp_admins'));
+    if (stored && Array.isArray(stored)) {
+      this.admins = [...this.admins, ...stored];
+    }
   },
   methods: {
     login() {
-      alert(`Logged in as ${this.form.role}!`);
-      this.$emit("close");
-    },
-  },
+      const { username, password } = this.form;
+
+      const found = this.admins.find(
+        admin =>
+          (admin.username === username || admin.uid === username) &&
+          admin.password === password
+      );
+
+      if (found) {
+        localStorage.setItem('admin', JSON.stringify(found));
+        alert(`Login berhasil sebagai ${found.name} (${found.role})`);
+        this.$emit('close');
+        window.location.reload(); // optional, bisa dihapus kalau tidak mau reload
+      } else {
+        alert('Username/UID atau password salah.');
+      }
+    }
+  }
 };
 </script>
 
