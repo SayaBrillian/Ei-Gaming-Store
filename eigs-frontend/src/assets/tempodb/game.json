@@ -1,0 +1,75 @@
+[
+    {
+      "id": 1,
+      "name": "Honkai Impact 3rd",
+      "year": 2016,
+      "developer": "miHoYo",
+      "description": "Game aksi 3D dengan gameplay cepat dan cerita mendalam tentang pertarungan melawan Honkai.",
+      "image": "/gamelogo/honkaiimpact.png",
+      "officialSite": "https://honkaiimpact3.hoyoverse.com"
+    },
+    {
+      "id": 2,
+      "name": "Genshin Impact",
+      "year": 2020,
+      "developer": "miHoYo",
+      "description": "Genshin Impact adalah game aksi RPG dengan dunia terbuka yang luas dan sistem pertarungan berbasis elemen.",
+      "image": "/gamelogo/genshinimpact.png",
+      "officialSite": "https://genshin.hoyoverse.com"
+    },
+    {
+      "id": 3,
+      "name": "Honkai: Star Rail",
+      "year": 2023,
+      "developer": "miHoYo",
+      "description": "Game RPG berbasis giliran dengan petualangan luar angkasa dan elemen strategi.",
+      "image": "/gamelogo/honkaistarrail.png",
+      "officialSite": "https://hsr.hoyoverse.com"
+    },
+    {
+      "id": 4,
+      "name": "Zenless Zone Zero",
+      "year": 2024,
+      "developer": "miHoYo",
+      "description": "ARPG bertema urban fantasy dengan sistem pertarungan cepat dan karakter unik.",
+      "image": "/gamelogo/zenlesszonezero.png",
+      "officialSite": "https://zenless.hoyoverse.com"
+    },
+    {
+      "id": 5,
+      "name": "Wuthering Waves",
+      "year": 2024,
+      "developer": "Kuro Games",
+      "description": "Game aksi RPG dunia terbuka dengan gaya visual yang memukau dan sistem pertarungan dinamis.",
+      "image": "/gamelogo/wutheringwaves.png",
+      "officialSite": "https://wutheringwaves.kurogame.com"
+    },
+    {
+      "id": 6,
+      "name": "Punishing: Gray Raven",
+      "year": 2019,
+      "developer": "Kuro Game",
+      "description": "Game aksi cepat dengan nuansa sci-fi dan pertarungan intens dalam dunia pasca-apokaliptik.",
+      "image": "/gamelogo/punishinggrayraven.png",
+      "officialSite": "https://pgr.kurogame.com"
+    },
+    {
+      "id": 7,
+      "name": "Reverse: 1999",
+      "year": 2023,
+      "developer": "Bluepoch",
+      "description": "Strategi turn-based RPG bertema perjalanan waktu dan atmosfer magis dari era 1900-an.",
+      "image": "/gamelogo/reverse1999.png",
+      "officialSite": "https://re1999.bluepoch.com"
+    },
+    {
+      "id": 8,
+      "name": "Blue Archive",
+      "year": 2021,
+      "developer": "Nexon Games",
+      "description": "Game RPG dengan elemen anime yang memadukan pertarungan taktis dan cerita ringan sekolah.",
+      "image": "/gamelogo/bluearchive.png",
+      "officialSite": "https://bluearchive.nexon.com"
+    }
+  ]
+  
