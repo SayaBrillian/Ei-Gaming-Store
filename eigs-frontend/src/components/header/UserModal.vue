@@ -44,14 +44,11 @@ export default {
         password: "",
         confirmPassword: ""
       },
-      users: [] // dari JSON
+      users: []
     };
   },
   mounted() {
-    // Ambil data users dari import
     this.users = usersData;
-
-    // Cek apakah ada data tambahan dari localStorage (simulasi register yang tersimpan)
     const storedUsers = JSON.parse(localStorage.getItem('temp_users'));
     if (storedUsers && Array.isArray(storedUsers)) {
       this.users = [...this.users, ...storedUsers];
@@ -71,11 +68,8 @@ export default {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
         alert(`Login berhasil! Selamat datang, ${user.name}`);
-
-        // Reload halaman setelah login berhasil
-        location.reload();  // Ini akan memuat ulang halaman
-
         this.$emit('close');
+        location.reload(); // tetap reload sesuai permintaan
       } else {
         alert("Username/email/UID atau password salah.");
       }
@@ -84,13 +78,11 @@ export default {
     handleRegister() {
       const input = this.registerData;
 
-      // Validasi password
       if (input.password !== input.confirmPassword) {
         alert("Password tidak cocok!");
         return;
       }
 
-      // Cek duplicate username/email
       const isDuplicate = this.users.some(u =>
         u.username === input.username || u.email === input.email
       );
@@ -100,7 +92,6 @@ export default {
         return;
       }
 
-      // Generate UID 8 digit
       const nextId = this.users.length + 1;
       const uid = String(nextId).padStart(8, '0');
 
@@ -113,14 +104,13 @@ export default {
         password: input.password
       };
 
-      // Simpan user baru ke localStorage sementara (karena tidak bisa ubah file asli)
       let newUsers = JSON.parse(localStorage.getItem('temp_users')) || [];
       newUsers.push(newUser);
       localStorage.setItem('temp_users', JSON.stringify(newUsers));
       localStorage.setItem('user', JSON.stringify(newUser));
 
       alert(`Register berhasil! UID kamu: ${uid}`);
-      this.users.push(newUser); // untuk session saat ini
+      this.users.push(newUser);
       this.$emit('close');
     }
   }

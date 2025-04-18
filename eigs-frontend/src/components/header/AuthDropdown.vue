@@ -9,8 +9,8 @@
 
     <div v-if="isDropdownVisible" class="dropdown-menu">
       <template v-if="!isLoggedIn">
-        <button @click="openUserModal" class="dropdown-item">Login as User</button>
-        <button @click="openAdminModal" class="dropdown-item">Login as Admin</button>
+        <button @click.stop="openUserModal" class="dropdown-item">Login as User</button>
+        <button @click.stop="openAdminModal" class="dropdown-item">Login as Admin</button>
       </template>
 
       <template v-else>
@@ -21,7 +21,8 @@
               <p class="profile-name">{{ userProfile.name }}</p>
               <p class="profile-email">{{ userProfile.email }}</p>
               <p class="profile-status" :class="{ 'admin': userProfile.isAdmin }">
-                {{ userProfile.isAdmin ? 'Admin' : 'User' }}
+                <span v-if="userProfile.isAdmin">🛡️ Admin</span>
+                <span v-else>👤 User</span>
               </p>
             </div>
           </div>
@@ -65,6 +66,7 @@ export default {
   },
   methods: {
     toggleDropdown() {
+      if (this.showUserModal || this.showAdminModal) return; // Cegah toggle saat modal aktif
       this.isDropdownVisible = !this.isDropdownVisible;
     },
     openUserModal() {
@@ -83,13 +85,23 @@ export default {
     },
     loadUserData() {
       const userData = JSON.parse(localStorage.getItem("user"));
+      const adminData = JSON.parse(localStorage.getItem("admin"));
+
       if (userData) {
         this.isLoggedIn = true;
         this.userProfile = {
           name: userData.name,
           email: userData.email,
           picture: userData.picture || "https://via.placeholder.com/40",
-          isAdmin: userData.isAdmin || false,
+          isAdmin: false,
+        };
+      } else if (adminData) {
+        this.isLoggedIn = true;
+        this.userProfile = {
+          name: adminData.name,
+          email: adminData.username + "@admin.local",
+          picture: "https://via.placeholder.com/40",
+          isAdmin: true,
         };
       } else {
         this.isLoggedIn = false;
@@ -110,6 +122,7 @@ export default {
         isAdmin: false,
       };
       localStorage.removeItem("user");
+      localStorage.removeItem("admin");
       alert("Anda telah logout");
     },
   },

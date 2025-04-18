@@ -32,7 +32,6 @@ export default {
   mounted() {
     this.admins = adminsData;
 
-    // Cek juga localStorage (kalau kamu ingin mendukung simpanan lokal baru)
     const stored = JSON.parse(localStorage.getItem('temp_admins'));
     if (stored && Array.isArray(stored)) {
       this.admins = [...this.admins, ...stored];
@@ -52,7 +51,7 @@ export default {
         localStorage.setItem('admin', JSON.stringify(found));
         alert(`Login berhasil sebagai ${found.name} (${found.role})`);
         this.$emit('close');
-        window.location.reload(); // optional, bisa dihapus kalau tidak mau reload
+        window.location.reload(); // kamu bilang ingin tetap reload, jadi ini dipertahankan
       } else {
         alert('Username/UID atau password salah.');
       }
@@ -60,6 +59,8 @@ export default {
   }
 };
 </script>
+
+
 
 <style scoped>
 .modal-overlay {
