@@ -4,7 +4,11 @@ import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
-  base: '/',
+  base: '/Ei-Gaming-Store/',
+  build: {
+    outDir: '../docs', // arahkan build keluar ke folder docs
+    emptyOutDir: true  // hapus isi folder docs sebelum build baru
+  },
   plugins: [
     vue(),
     vueDevTools(),
