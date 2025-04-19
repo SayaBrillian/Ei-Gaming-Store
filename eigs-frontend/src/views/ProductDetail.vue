@@ -1,23 +1,11 @@
 <template>
-  <div class="main-content" v-if="game">
-<!-- Game List Sticky Header -->
-<div class="game-mini-scroll sticky-header">
-  <button class="scroll-btn" @click="scrollLeft">&lt;</button>
-  <div class="scroll-wrapper" ref="scrollWrapper">
-    <div
-      v-for="g in games"
-      :key="g.id"
-      class="mini-game-card"
-      :class="{ active: g.id === game?.id }"
-      @click="changeGame(g.id)"
-    >
-      <img :src="g.image" :alt="g.name" class="game-logo" />
-      <p class="game-name">{{ g.name }}</p>
-    </div>
-  </div>
-  <button class="scroll-btn" @click="scrollRight">&gt;</button>
-</div>
+  <div class="main-content">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav">
+      <router-link to="/products">Produk</router-link> &gt; {{ game.name }}
+    </nav>
 
+    <!-- Detail Game -->
     <div class="game-detail">
       <img :src="game.image" :alt="game.name" class="game-image-large" />
       <div class="game-info">
@@ -29,14 +17,16 @@
       </div>
     </div>
 
+    <!-- Bagian Produk dan Auto Fill Form -->
     <div class="product-section">
       <div class="product-cards">
-        <div v-for="product in filteredProducts" :key="product.id" class="product-card" @click="selectProduct(product)">
+        <div v-for="product in products" :key="product.id" class="product-card" @click="selectProduct(product)">
           <p>{{ product.name }}</p>
           <p>Rp {{ product.price }}</p>
         </div>
       </div>
 
+      <!-- Auto Fill Form Tetap Ditampilkan -->
       <div class="order-form">
         <h2>Form Pesanan</h2>
         <p v-if="selectedProduct">Anda Memilih: {{ selectedProduct.name }}</p>
@@ -51,29 +41,32 @@
 </template>
 
 <script>
-import games from "@/assets/tempodb/game.json";
-import products from "@/assets/tempodb/product.json";
-
 export default {
   data() {
     return {
-      games: games,
-      game: null,
-      products: [],
-      selectedProduct: null,
+      game: {
+        id: 1,
+        name: "Genshin Impact",
+        year: 2020,
+        developer: "miHoYo",
+        description: "Genshin Impact adalah game aksi RPG dengan dunia terbuka yang luas dan sistem pertarungan berbasis elemen.",
+        image: "path/to/genshin-large.jpg",
+        officialSite: "https://genshin.mihoyo.com",
+      },
+      products: [
+        { id: 1, name: "60 Genesis Crystals", price: 15000 },
+        { id: 2, name: "300 Genesis Crystals", price: 75000 },
+        { id: 3, name: "980 Genesis Crystals", price: 250000 },
+      ],
+      selectedProduct: null, // Produk yang dipilih (default null)
       form: {
         username: "",
       },
     };
   },
-  computed: {
-    filteredProducts() {
-      return this.products.filter((product) => product.gameId === this.game?.id);
-    },
-  },
   methods: {
     selectProduct(product) {
-      this.selectedProduct = product;
+      this.selectedProduct = product; // Set produk yang dipilih
     },
     makeOrder() {
       if (this.selectedProduct) {
@@ -82,37 +75,9 @@ export default {
         alert("Pilih produk terlebih dahulu sebelum membuat pesanan.");
       }
     },
-    changeGame(id) {
-      this.$router.push(`/products/${id}`);
-    },
-    loadData() {
-      const gameId = parseInt(this.$route.params.id);
-      this.products = products;
-      this.game = games.find((g) => g.id === gameId);
-      this.selectedProduct = null;
-      this.form.username = "";
-    },
-    scrollLeft() {
-      this.$refs.scrollWrapper.scrollLeft -= 150;
-    },
-    scrollRight() {
-      this.$refs.scrollWrapper.scrollLeft += 150;
-    },
-  },
-  mounted() {
-    this.loadData();
-  },
-  watch: {
-    '$route.params.id': {
-      handler() {
-        this.loadData();
-      },
-      immediate: true,
-    },
   },
 };
 </script>
-
 
 <style scoped>
 .main-content {
@@ -122,106 +87,19 @@ export default {
   padding-top: 70px;
 }
 
-.game-mini-scroll {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.sticky-header {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 10;
-  /* Hapus box-shadow agar tidak ada bayangan */
-  box-shadow: none;
-  /* Hapus margin atau padding tambahan jika ada */
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-
-.scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 20px;
-  flex: 1;
-}
-
-.mini-game-card {
-  display: flex;
-  align-items: center;
-  min-width: 150px;
-  padding: 8px;
-  text-align: left;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  gap: 10px;
-}
-
-.mini-game-card:hover {
-  background-color: rgba(167, 139, 250, 0.1);
-}
-
-.mini-game-card.active {
-  border-color: rgba(167, 139, 250, 1);
-  background-color: rgba(167, 139, 250, 0.2);
-}
-
-.game-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 8px;
-}
-
-.game-name {
+.breadcrumb-nav {
   font-size: 1rem;
-  font-weight: 600;
+  margin-bottom: 20px;
+  color: rgba(85, 85, 85, 1);
 }
 
-.scroll-btn {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.75rem;
-  font-weight: bold;
-  color: rgba(75, 0, 130, 0.8);
-  transition: background-color 0.3s ease;
-  outline: none;
+.breadcrumb-nav a {
+  color: rgba(167, 139, 250, 1);
+  text-decoration: none;
 }
 
-.scroll-btn:hover {
-  background-color: rgba(167, 139, 250, 0.2);
-}
-
-/* Hilangkan garis saat diklik (focus & active) */
-.scroll-btn:focus,
-.scroll-btn:active {
-  outline: none;
-  box-shadow: none;
-  border-color: #ccc;
-}
-
-.scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 20px;
-  flex: 1;
-
-  /* Sembunyikan scrollbar di berbagai browser */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-}
-
-.scroll-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
 }
 
 .game-detail {
