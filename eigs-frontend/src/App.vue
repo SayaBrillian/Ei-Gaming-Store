@@ -23,8 +23,6 @@ import Header from './components/header/Header.vue';
   min-width: 320px; /* Hindari elemen terlalu kecil pada layar kecil */
   margin: auto; /* Konten tetap berada di tengah secara horizontal */
   padding-top: 70px; /* Tambahkan jarak agar tidak tertutup header */
-  padding-left: 20px;
-  padding-right: 20px;
   min-height: 100vh; /* Pastikan konten memenuhi tinggi layar */
   box-sizing: border-box; /* Memastikan padding tidak memengaruhi total width */
 }

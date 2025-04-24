@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard-home">
-    <h2>Riwayat Order Admin</h2>
+    <h2>Daftar Order Admin</h2>
     <div class="table-section">
-      <h3>Riwayat Order</h3>
+      <h3>Order Aktif</h3>
       <table>
         <thead>
           <tr>
@@ -10,17 +10,15 @@
             <th>Produk</th>
             <th>Harga</th>
             <th>Status</th>
-            <th>Tanggal Dibayar</th>
             <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in completedOrders" :key="order.id">
+          <tr v-for="order in activeOrders" :key="order.id">
             <td>{{ order.id }}</td>
             <td>{{ getProduct(order.product_id).name }}</td>
             <td>{{ formatPrice(order.final_price) }}</td>
             <td>{{ order.status }}</td>
-            <td>{{ order.tanggal_dibayar }}</td>
             <td><button @click="selectOrder(order)">Detail</button></td>
           </tr>
         </tbody>
@@ -33,12 +31,14 @@
       :user="selectedUser"
       :product="selectedProduct"
       @close="showModal = false"
+      @ok="handleOrderCompleted"
+      @cancelOrder="handleCancelOrder"
     />
   </div>
 </template>
 
 <script>
-import ordersData from '@/assets/tempodb/order_history.json';
+import ordersData from '@/assets/tempodb/order_active.json'; // Lokasi JSON yang sesuai
 import productsData from '@/assets/tempodb/products.json';
 import usersData from '@/assets/tempodb/users.json';
 import OrderDetailModal from '@/components/OrderDetailModal.vue';
@@ -57,8 +57,8 @@ export default {
     };
   },
   computed: {
-    completedOrders() {
-      return this.orders.filter(order => order.status === 'finished' || order.status === 'canceled_admin' || order.status === 'canceled_system');
+    activeOrders() {
+      return this.orders.filter(order => order.status !== 'finished' && order.status !== 'canceled_user' && order.status !== 'canceled_admin' && order.status !== 'canceled_system');
     },
   },
   methods: {
@@ -76,6 +76,16 @@ export default {
       this.selectedProduct = this.getProduct(order.product_id);
       this.selectedUser = this.getUser(order.user_id);
       this.showModal = true;
+    },
+    handleOrderCompleted() {
+      // Handle when admin confirms the order
+      console.log('Order Completed');
+      this.showModal = false;
+    },
+    handleCancelOrder() {
+      // Handle order cancellation
+      console.log('Order Cancelled');
+      this.showModal = false;
     },
   },
 };

@@ -40,15 +40,15 @@
         if (this.isAdmin) {
             return [
         { name: 'Home', path: '/dashboard/admin/home' },
-        { name: 'Order', path: '/dashboard/admin/order' },
-        { name: 'Job', path: '/dashboard/admin/job' },
-        { name: 'Product', path: '/dashboard/admin/product' },
+        { name: 'Jobs', path: '/dashboard/admin/jobs' },
+        { name: 'Orders', path: '/dashboard/admin/orders' },
+        { name: 'Products', path: '/dashboard/admin/products' },
         { name: 'History', path: '/dashboard/admin/history' },
       ]
     } else {
       return [
         { name: 'Home', path: '/dashboard/user/home' },
-        { name: 'Order', path: '/dashboard/user/order' },
+        { name: 'Orders', path: '/dashboard/user/orders' },
         { name: 'History', path: '/dashboard/user/history' },
       ]
     }
@@ -72,14 +72,16 @@
   
   <style scoped>
   .sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #f4f4f4;
-    border-right: 1px solid #ccc;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
+  position: fixed;
+  width: 250px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
   .sidebar-header {
     margin-bottom: 20px;
   }

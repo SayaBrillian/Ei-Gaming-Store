@@ -1,50 +1,64 @@
 <template>
   <div class="main-content" v-if="game">
-<!-- Game List Sticky Header -->
-<div class="game-mini-scroll sticky-header">
-  <button class="scroll-btn" @click="scrollLeft">&lt;</button>
-  <div class="scroll-wrapper" ref="scrollWrapper">
-    <div
-      v-for="g in games"
-      :key="g.id"
-      class="mini-game-card"
-      :class="{ active: g.id === game?.id }"
-      @click="changeGame(g.id)"
-    >
-      <img :src="g.image" :alt="g.name" class="game-logo" />
-      <p class="game-name">{{ g.name }}</p>
-    </div>
-  </div>
-  <button class="scroll-btn" @click="scrollRight">&gt;</button>
-</div>
-
-    <div class="game-detail">
-      <img :src="game.image" :alt="game.name" class="game-image-large" />
-      <div class="game-info">
-        <h2>{{ game.name }}</h2>
-        <p><strong>Tahun Rilis:</strong> {{ game.year }}</p>
-        <p><strong>Developer:</strong> {{ game.developer }}</p>
-        <p class="game-description">{{ game.description }}</p>
-        <a :href="game.officialSite" target="_blank" class="official-site">Kunjungi Website Resmi</a>
+    <!-- Sticky Game List -->
+    <div class="game-mini-scroll sticky-header">
+      <button class="scroll-btn" @click="scrollLeft">&lt;</button>
+      <div class="scroll-wrapper" ref="scrollWrapper">
+        <div
+          v-for="g in games"
+          :key="g.id"
+          class="mini-game-card"
+          :class="{ active: g.id === game?.id }"
+          @click="changeGame(g.id)"
+        >
+          <img :src="g.image" :alt="g.name" class="game-logo" />
+          <p class="game-name">{{ g.name }}</p>
+        </div>
       </div>
+      <button class="scroll-btn" @click="scrollRight">&gt;</button>
     </div>
 
-    <div class="product-section">
-      <div class="product-cards">
-        <div v-for="product in filteredProducts" :key="product.id" class="product-card" @click="selectProduct(product)">
-          <p>{{ product.name }}</p>
-          <p>Rp {{ product.price }}</p>
+    <!-- Game Detail + Order Section -->
+    <div class="content-grid">
+      <!-- Game Detail -->
+      <div class="game-detail">
+        <img :src="game.image" :alt="game.name" class="game-image-large" />
+        <div class="game-info">
+          <h2>{{ game.name }}</h2>
+          <p><strong>Tahun Rilis:</strong> {{ game.year }}</p>
+          <p><strong>Developer:</strong> {{ game.developer }}</p>
+          <p class="game-description">{{ game.description }}</p>
+          <a :href="game.officialSite" target="_blank" class="official-site">Kunjungi Website Resmi</a>
         </div>
       </div>
 
-      <div class="order-form">
-        <h2>Form Pesanan</h2>
-        <p v-if="selectedProduct">Anda Memilih: {{ selectedProduct.name }}</p>
-        <p v-else>Pilih produk dari daftar di sebelah kiri.</p>
-        <form @submit.prevent="makeOrder">
-          <input type="text" v-model="form.username" placeholder="Masukkan Username Game Anda" required />
-          <button type="submit">Buat Pesanan</button>
-        </form>
+      <!-- Order Section -->
+      <div class="product-section">
+        <!-- Produk -->
+        <div class="product-cards">
+          <div v-for="product in filteredProducts" :key="product.id" 
+  class="product-card" 
+  :class="{ active: selectedProduct?.id === product.id }" 
+  @click="selectProduct(product)">
+  <p>{{ product.name }}</p>
+  <p>Rp {{ product.price }}</p>
+</div>
+
+        </div>
+
+        <!-- Form Pesanan -->
+        <div class="order-form">
+          <h2>Form Pesanan</h2>
+          <p v-if="selectedProduct">Produk: {{ selectedProduct.name }} (Rp {{ selectedProduct.price }})</p>
+          <p v-else>Pilih produk terlebih dahulu.</p>
+          <form @submit.prevent="makeOrder">
+            <input type="text" v-model="form.uid" placeholder="UID Game" required />
+            <input type="text" v-model="form.server" placeholder="Server" required />
+            <input type="email" v-model="form.email" placeholder="Email" required />
+            <input type="tel" v-model="form.phone" placeholder="No. HP / WhatsApp" required />
+            <button type="submit">Checkout</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -52,7 +66,7 @@
 
 <script>
 import games from "@/assets/tempodb/game.json";
-import products from "@/assets/tempodb/product.json";
+import products from "@/assets/tempodb/products.json";
 
 export default {
   data() {
@@ -62,7 +76,10 @@ export default {
       products: [],
       selectedProduct: null,
       form: {
-        username: "",
+        uid: "",
+        server: "",
+        email: "",
+        phone: "",
       },
     };
   },
@@ -77,7 +94,7 @@ export default {
     },
     makeOrder() {
       if (this.selectedProduct) {
-        alert(`Pesanan dibuat untuk ${this.form.username} dengan produk ${this.selectedProduct.name}`);
+        alert(`Pesanan dibuat:\nProduk: ${this.selectedProduct.name}\nUID: ${this.form.uid}\nEmail: ${this.form.email}`);
       } else {
         alert("Pilih produk terlebih dahulu sebelum membuat pesanan.");
       }
@@ -90,7 +107,12 @@ export default {
       this.products = products;
       this.game = games.find((g) => g.id === gameId);
       this.selectedProduct = null;
-      this.form.username = "";
+      this.form = {
+        uid: "",
+        server: "",
+        email: "",
+        phone: "",
+      };
     },
     scrollLeft() {
       this.$refs.scrollWrapper.scrollLeft -= 150;
@@ -113,7 +135,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .main-content {
   max-width: 1080px;
@@ -121,124 +142,93 @@ export default {
   margin: auto;
   padding-top: 70px;
 }
-
-.game-mini-scroll {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
 .sticky-header {
   position: sticky;
   top: 0;
   background-color: white;
   z-index: 10;
-  /* Hapus box-shadow agar tidak ada bayangan */
-  box-shadow: none;
-  /* Hapus margin atau padding tambahan jika ada */
-  margin-bottom: 0;
-  padding-bottom: 0;
+  padding: 10px 0;
+  margin-bottom: 20px;
 }
 
+.game-mini-scroll {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
 .scroll-wrapper {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  gap: 20px;
+  gap: 15px;
   flex: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .mini-game-card {
   display: flex;
   align-items: center;
-  min-width: 150px;
+  gap: 10px;
   padding: 8px;
-  text-align: left;
+  min-width: 150px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.3s ease;
-  gap: 10px;
 }
-
 .mini-game-card:hover {
   background-color: rgba(167, 139, 250, 0.1);
 }
-
 .mini-game-card.active {
-  border-color: rgba(167, 139, 250, 1);
   background-color: rgba(167, 139, 250, 0.2);
+  border: 2px solid rgba(167, 139, 250, 1);
 }
-
 .game-logo {
   width: 40px;
   height: 40px;
   object-fit: contain;
   border-radius: 8px;
 }
-
 .game-name {
   font-size: 1rem;
   font-weight: 600;
 }
-
 .scroll-btn {
   background-color: white;
   border: 1px solid #ccc;
   padding: 8px 16px;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 1.75rem;
-  font-weight: bold;
+  cursor: pointer;
   color: rgba(75, 0, 130, 0.8);
-  transition: background-color 0.3s ease;
-  outline: none;
 }
 
-.scroll-btn:hover {
-  background-color: rgba(167, 139, 250, 0.2);
-}
-
-/* Hilangkan garis saat diklik (focus & active) */
-.scroll-btn:focus,
-.scroll-btn:active {
-  outline: none;
-  box-shadow: none;
-  border-color: #ccc;
-}
-
-.scroll-wrapper {
+/* Layout: detail kiri 40%, order kanan 60% */
+.content-grid {
   display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
   gap: 20px;
-  flex: 1;
-
-  /* Sembunyikan scrollbar di berbagai browser */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  margin-top: 20px;
 }
 
-.scroll-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
-}
-
+/* Detail game */
 .game-detail {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.game-image-large {
-  width: 300px;
+  width: 40%;
+  background-color: white;
+  padding: 20px;
   border-radius: 10px;
+  /* Tambahan box-shadow yang lebih tegas */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
-
-.game-info {
-  flex: 1;
+.game-image-large {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
-
 .official-site {
   display: inline-block;
   margin-top: 10px;
@@ -246,24 +236,25 @@ export default {
   font-weight: 600;
   text-decoration: none;
 }
-
 .official-site:hover {
   text-decoration: underline;
 }
 
-/* Layout Produk dan Form */
+/* Order Section */
 .product-section {
+  width: 60%;
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
 .product-cards {
-  width: 60%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
 }
 
+/* Style untuk produk card */
 .product-card {
   padding: 15px;
   border: 1px solid rgba(167, 139, 250, 1);
@@ -271,29 +262,60 @@ export default {
   background-color: white;
   text-align: center;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+/* Hover efek untuk produk */
 .product-card:hover {
   background-color: rgba(167, 139, 250, 0.1);
 }
 
+/* Style aktif produk yang dipilih */
+.product-card.active {
+  border-color: rgba(167, 139, 250, 1);
+  background-color: rgba(167, 139, 250, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+  
+
 .order-form {
-  width: 40%;
-  background-color: rgba(245, 245, 245, 1);
+  background-color: #f9fafb;
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.order-form p {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.order-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: white;
 }
 
 button {
-  background-color: rgba(167, 139, 250, 1);
-  color: white;
-  padding: 10px 15px;
+  padding: 12px;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: rgba(130, 102, 230, 1);
+button[type="submit"] {
+  background-color: #10b981;
+  color: white;
+}
+button[type="submit"]:hover {
+  background-color: #059669;
 }
 </style>

@@ -43,6 +43,18 @@ export default {
 
 
 <style scoped>
+.main-content {
+    max-width: 1080px;
+    width: 95vw;
+    min-width: 320px;
+    margin: auto;
+    padding-top: 70px;
+    padding-left: 20px;
+    padding-right: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
 .page-title {
   font-size: 2rem;
   font-weight: bold;

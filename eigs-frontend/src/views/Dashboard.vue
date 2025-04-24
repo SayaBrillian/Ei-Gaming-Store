@@ -11,7 +11,7 @@
   import DashSidebar from '@/components/DashSidebar.vue'
   </script>
   
-  <style scoped>
+  <style>
   .dashboard-container {
     display: flex;
     min-height: 100vh;
@@ -21,6 +21,7 @@
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    margin-left: 250px;
   }
   </style>
   

@@ -13,14 +13,14 @@ import Dashboard from '../views/Dashboard.vue'
 
 // Dashboard - User views
 import UserHome from '../views/dashuser/UserHome.vue'
-import UserOrder from '../views/dashuser/UserOrder.vue'
+import UserOrders from '../views/dashuser/UserOrders.vue'
 import UserHistory from '../views/dashuser/UserHistory.vue'
 
 // Dashboard - Admin views
 import AdminHome from '../views/dashadmin/AdminHome.vue'
-import AdminOrder from '../views/dashadmin/AdminOrder.vue'
-import AdminJob from '../views/dashadmin/AdminJob.vue'
-import AdminProduct from '../views/dashadmin/AdminProduct.vue'
+import AdminOrders from '../views/dashadmin/AdminOrders.vue'
+import AdminJobs from '../views/dashadmin/AdminJobs.vue'
+import AdminProducts from '../views/dashadmin/AdminProducts.vue'
 import AdminHistory from '../views/dashadmin/AdminHistory.vue'
 
 const router = createRouter({
@@ -41,14 +41,14 @@ const router = createRouter({
       children: [
         // User routes
         { path: 'user/home', component: UserHome },
-        { path: 'user/order', component: UserOrder },
+        { path: 'user/orders', component: UserOrders },
         { path: 'user/history', component: UserHistory },
 
         // Admin routes
         { path: 'admin/home', component: AdminHome },
-        { path: 'admin/order', component: AdminOrder },
-        { path: 'admin/job', component: AdminJob },
-        { path: 'admin/product', component: AdminProduct },
+        { path: 'admin/orders', component: AdminOrders },
+        { path: 'admin/jobs', component: AdminJobs },
+        { path: 'admin/products', component: AdminProducts },
         { path: 'admin/history', component: AdminHistory },
       ]
     }

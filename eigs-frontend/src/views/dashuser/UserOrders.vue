@@ -1,55 +1,85 @@
 <template>
-  <div class="user-history">
-    <h2>Riwayat Transaksi</h2>
+  <div class="user-orders">
+    <h2>Daftar Order Aktif</h2>
     <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Produk</th>
           <th>Status</th>
-          <th>Tanggal</th>
+          <th>Tanggal Dipesan</th>
+          <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in userHistory" :key="item.id">
-          <td>{{ item.id }}</td>
-          <td>{{ item.product_id }}</td>
-          <td>{{ item.status }}</td>
-          <td>{{ getFinalDate(item) }}</td>
+        <tr v-for="order in userOrders" :key="order.id">
+          <td>{{ order.id }}</td>
+          <td>{{ order.product_id }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ formatDate(order.tanggal_dipesan) }}</td>
+          <td>
+            <button @click="openModal(order)">Detail</button>
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Modal -->
+    <div v-if="selectedOrder" class="modal-overlay">
+      <div class="modal">
+        <h3>Detail Order #{{ selectedOrder.id }}</h3>
+        <p><strong>Produk:</strong> {{ selectedOrder.product_id }}</p>
+        <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+        <p><strong>Tanggal Dipesan:</strong> {{ formatDate(selectedOrder.tanggal_dipesan) }}</p>
+        <p v-if="selectedOrder.tanggal_dibayar"><strong>Tanggal Dibayar:</strong> {{ formatDate(selectedOrder.tanggal_dibayar) }}</p>
+
+        <div class="modal-actions">
+          <button @click="selectedOrder = null">Tutup</button>
+          <button @click="confirmOrder(selectedOrder.id)">OK</button>
+          <button @click="cancelOrder(selectedOrder.id)">Batalkan Order</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import historyData from '@/assets/tempodb/order_history.json';
+import ordersData from '@/assets/tempodb/order_active.json';
 
 export default {
   data() {
     return {
-      history: historyData,
+      orders: ordersData,
+      selectedOrder: null,
     };
   },
   computed: {
-    userHistory() {
+    userOrders() {
       const userId = 1; // ganti dengan ID user yang login
-      return this.history.filter(item => item.user_id === userId);
+      return this.orders.filter(order => order.user_id === userId);
     },
   },
   methods: {
     formatDate(date) {
       return new Date(date).toLocaleString('id-ID');
     },
-    getFinalDate(item) {
-      return this.formatDate(item.tanggal_selesai || item.tanggal_dibatalkan || item.tanggal_dibayar || item.tanggal_dipesan);
+    openModal(order) {
+      this.selectedOrder = order;
+    },
+    confirmOrder(id) {
+      alert(`Order #${id} dikonfirmasi.`);
+      this.selectedOrder = null;
+    },
+    cancelOrder(id) {
+      alert(`Order #${id} dibatalkan.`);
+      this.selectedOrder = null;
     },
   },
 };
 </script>
 
 <style scoped>
-.user-history {
+.user-orders {
   padding: 2rem;
   background-color: #f9fafb;
   min-height: 100vh;
