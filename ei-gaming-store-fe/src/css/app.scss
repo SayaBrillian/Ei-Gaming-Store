@@ -1,1 +1,47 @@
-// app global css in SCSS form
+/* 🌐 Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🌐 Body & typography */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: $dark;
+  color: $light;
+  line-height: 1.6;
+}
+
+/* 🌐 Link */
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $hover;
+  }
+}
+
+/* 🌐 Utility Classes */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-hover {
+  transition: color 0.3s ease;
+  &:hover {
+    color: $primary;
+  }
+}
+
+.bg-primary {
+  background-color: $primary;
+  color: $light;
+}
+
+.bg-dark {
+  background-color: $dark;
+  color: $light;
+}
