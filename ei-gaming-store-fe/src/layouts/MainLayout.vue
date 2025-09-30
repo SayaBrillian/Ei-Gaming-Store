@@ -1,23 +1,36 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
+    <!-- HEADER / NAVBAR -->
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <!-- Logo -->
+        <q-toolbar-title class="row items-center">
+          <span class="text-primary text-weight-bold">EI Gaming Store</span>
+        </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <!-- Search -->
+        <q-input
+          standout
+          dense
+          v-model="search"
+          placeholder="Search..."
+          class="q-mr-md"
+          debounce="300"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <!-- Menu -->
+        <q-btn flat label="Home" :to="{ path: '/' }" />
+        <q-btn flat label="Product" :to="{ path: '/product' }" />
+        <q-btn flat :label="isLoggedIn ? username : 'Login'" :to="{ path: '/profile' }" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
-
+    <!-- HALAMAN AKTIF -->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -26,56 +39,15 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+const search = ref('')
+const isLoggedIn = ref(false)       // sementara dummy login status
+const username = ref('Raiden Shogun') // dummy user name
 </script>
+
+<style scoped>
+/* contoh kecil styling tambahan */
+.q-toolbar {
+  background-color: white;
+}
+</style>

@@ -1,16 +1,33 @@
+import MainLayout from 'layouts/MainLayout.vue'
+import DashboardLayout from 'layouts/DashboardLayout.vue'
+
+import HomePage from 'pages/HomePage.vue'
+import ProductPage from 'pages/ProductPage.vue'
+import ProfilePage from 'pages/ProfilePage.vue'
+
+import DashboardHome from 'pages/dashboard/DashboardHome.vue'
+import DashboardUsers from 'pages/dashboard/DashboardUsers.vue'
+import DashboardSettings from 'pages/dashboard/DashboardSettings.vue'
+
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    component: MainLayout,
+    children: [
+      { path: '', component: HomePage },          // /
+      { path: 'product', component: ProductPage },// /product
+      { path: 'profile', component: ProfilePage } // /profile
+    ]
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
-  },
+    path: '/dashboard',
+    component: DashboardLayout,
+    children: [
+      { path: '', component: DashboardHome },     // /dashboard
+      { path: 'users', component: DashboardUsers }, // /dashboard/users
+      { path: 'settings', component: DashboardSettings } // /dashboard/settings
+    ]
+  }
 ]
 
 export default routes
