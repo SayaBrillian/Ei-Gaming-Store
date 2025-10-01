@@ -1,16 +1,30 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
+// index.js
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 
-// Middleware
+// import routes
+import userRoutes from "./routes/userRoutes.js";
+
+// load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// middleware
+app.use(cors());
 app.use(express.json());
 
-// Route contoh
-app.get('/', (req, res) => {
-  res.send('Hello World dari Express.js 🚀');
+// base route
+app.get("/", (req, res) => {
+  res.send("🚀 API Backend is running...");
 });
 
-// Jalankan server
+// user routes
+app.use("/api/users", userRoutes);
+
+// start server
 app.listen(PORT, () => {
-  console.log(`Server jalan di http://localhost:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
