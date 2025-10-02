@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+    "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -11,7 +12,7 @@
     "restore": "node restore.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Brillian Bagus Aji Sasongko <brillianbagusajisasongko@gmail.com>",
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
