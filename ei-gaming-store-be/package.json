@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-    "type": "module",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -23,10 +23,13 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "inquirer": "^12.9.6",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
-    "postgres": "^3.4.7"
+    "postgres": "^3.4.7",
+    "redis": "^5.9.0"
   }
 }
