@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Client as PGClient } from "pg";
 //import { createClient as createRedisClient } from "redis";
 
-import authRoutes from "./src/routes/authRoutes.js"; // <--- baru
+import authModule from "./src/modules/authModule.js"; // <--- baru
 
 dotenv.config();
 
@@ -52,7 +52,7 @@ redis.on("error", (err) => console.error("❌ Redis error:", err));
 redis.connect().then(() => console.log("✅ Redis connected"));
 */
 // ========== ROUTES ==========
-app.use("/api/auth", authRoutes); // <-- endpoint: /api/auth/register, /api/auth/login
+app.use("/api/auth", authModule); // <-- endpoint: /api/auth/register, /api/auth/login
 
 // ========== TEST ROUTE ==========
 app.get("/", (req, res) => {
