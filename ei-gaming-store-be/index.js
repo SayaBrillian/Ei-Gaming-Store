@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
 import { Client as PGClient } from "pg";
-//import { createClient as createRedisClient } from "redis";
 
 import authModule from "./src/modules/authModule.js"; // <--- baru
 
@@ -42,15 +41,7 @@ if (process.env.DB_NAME) {
     .then(() => console.log("✅ Local PostgreSQL connected"))
     .catch(err => console.warn("❌ Local PostgreSQL failed:", err.message));
 }
-/*
-// ========== REDIS CLIENT ==========
-export const redis = createRedisClient({
-  url: process.env.REDIS_URL || "redis://localhost:6379",
-});
 
-redis.on("error", (err) => console.error("❌ Redis error:", err));
-redis.connect().then(() => console.log("✅ Redis connected"));
-*/
 // ========== ROUTES ==========
 app.use("/api/auth", authModule); // <-- endpoint: /api/auth/register, /api/auth/login
 

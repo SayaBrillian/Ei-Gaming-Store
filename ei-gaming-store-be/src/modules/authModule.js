@@ -52,7 +52,8 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'User registered successfully',
       user: {
-        id: user.id,
+        // Konversi BigInt ke string
+        id: user.id.toString(),
         email: user.email,
         username: user.username,
       },
@@ -86,13 +87,13 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate token
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id.toString() }, JWT_SECRET, { expiresIn: '7d' });
 
     res.status(200).json({
       message: 'Login successful',
       token,
       user: {
-        id: user.id,
+        id: user.id.toString(),
         email: user.email,
         username: user.username,
       },
