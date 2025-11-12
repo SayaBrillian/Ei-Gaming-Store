@@ -40,9 +40,9 @@ router.post('/register', async (req, res) => {
       data: {
         fullname,
         username,
-        birth_date,
-        birth_month,
-        birth_year,
+        birth_date: Number(birth_date),
+        birth_month: Number(birth_month),
+        birth_year: Number(birth_year),
         email,
         phone_number,
         password_now: hashedPassword,
@@ -52,7 +52,6 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'User registered successfully',
       user: {
-        // Konversi BigInt ke string
         id: user.id.toString(),
         email: user.email,
         username: user.username,
@@ -60,7 +59,7 @@ router.post('/register', async (req, res) => {
     });
   } catch (err) {
     console.error('REGISTER ERROR:', err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
@@ -86,8 +85,12 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid password' });
     }
 
-    // Generate token
-    const token = jwt.sign({ id: user.id.toString() }, JWT_SECRET, { expiresIn: '7d' });
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id.toString(), email: user.email },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
     res.status(200).json({
       message: 'Login successful',
@@ -100,7 +103,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (err) {
     console.error('LOGIN ERROR:', err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 

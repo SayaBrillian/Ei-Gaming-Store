@@ -1,11 +1,14 @@
 // index.js
+import cookieParser from 'cookie-parser';
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
 import { Client as PGClient } from "pg";
 
-import authModule from "./src/modules/authModule.js"; // <--- baru
+import loginModule from "./src/modules/loginModule.js";
+import registerModule from "./src/modules/registerModule.js";
+import logoutModule from './src/modules/logoutModule.js';
 
 dotenv.config();
 
@@ -15,6 +18,7 @@ const port = process.env.PORT || 3000;
 // ========== MIDDLEWARE ==========
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // ========== SUPABASE CLIENT ==========
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -43,7 +47,9 @@ if (process.env.DB_NAME) {
 }
 
 // ========== ROUTES ==========
-app.use("/api/auth", authModule); // <-- endpoint: /api/auth/register, /api/auth/login
+app.use("/api/auth", registerModule);
+app.use("/api/auth", loginModule);
+app.use('/api/auth', logoutModule);
 
 // ========== TEST ROUTE ==========
 app.get("/", (req, res) => {
